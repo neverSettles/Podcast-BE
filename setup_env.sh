@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Creating virtual environment
-python3 -m venv copilotenv
+python3 -m venv podenv
 
 # Activating the environment
-source copilotenv/bin/activate
+source podenv/bin/activate
 
 # Check if requirements.txt file exists
 if [ -f "requirements.txt" ]; then
