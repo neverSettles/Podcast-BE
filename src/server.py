@@ -5,6 +5,7 @@ from generate import gen_podcast
 
 from flask import Flask, jsonify, request
 from dotenv import load_dotenv
+from gTTS import gTTS
 
 
 # Set up OpenAI API credentials
@@ -27,7 +28,9 @@ def create_post():
     
     transcript = gen_podcast.create_podcast(topic, duration)
 
-    return jsonify({'message': transcript}), 200
+    tts = gTTS(transcript, lang='en')
+    tts.save('transcript.mp3')
+    return send_file('../transcript.mp3', mimetype="audio/mp3"), 200
 
 
 if __name__ == '__main__':
