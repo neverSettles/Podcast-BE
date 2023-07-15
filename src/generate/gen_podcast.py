@@ -1,7 +1,6 @@
 import openai
 import boto3
 import os
-import pyaudio
 import io
 import time
 import argparse
