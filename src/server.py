@@ -1,6 +1,8 @@
 import openai
 import os
 
+from generate import gen_podcast
+
 from flask import Flask, jsonify, request
 from dotenv import load_dotenv
 
@@ -22,20 +24,8 @@ def create_post():
     topic = data.get('topic')  # get parameter called 'topic'
     duration = data.get('duration')  # get parameter called 'duration'
     tone = data.get('tone')  # get parameter called 'tone'
-
-    # Call OpenAI API to generate podcast transcript
-    prompt = f"Topic: {topic}\nDuration: {duration}\nTone: {tone}\n\nTranscript:\n"
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=prompt,
-        temperature=0.7,
-        max_tokens=3000,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
-
-    transcript = response.choices[0].text.strip()
+    
+    transcript = gen_podcast.create_podcast(topic, duration)
 
     return jsonify({'message': transcript}), 200
 

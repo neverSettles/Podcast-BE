@@ -9,11 +9,6 @@ from dotenv import load_dotenv
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-parser = argparse.ArgumentParser(description='Podcast Generator')
-parser.add_argument('-t', '--topic', help='Topic of the podcast')
-parser.add_argument('-d', '--duration', help='Duration of the podcast in minutes')
-args = parser.parse_args()
-
 # def call_openai_api(prompt):
 #     message=[{"role": "user", "content": prompt}]
 #     response = openai.ChatCompletion.create(
@@ -61,11 +56,11 @@ def synthesize_speech(text):
 
     # The response body contains the audio stream.
     # Writing the stream in a mp3 file
-    filename = 'speech.mp3'
+    filename = 'output/speech.mp3'
     with open(filename, 'wb') as file:
         file.write(response['AudioStream'].read())
     
-    print("Speech synthesis completed. The output is stored as speech.mp3")
+    print("Speech synthesis completed. The output is stored in output/speech.mp3")
 
     # Play the audio file using pyaudio
     p = pyaudio.PyAudio()
@@ -96,22 +91,31 @@ Please only output a prompt that I can use to send to GPT.
 """
     return meta_prompt
 
+def create_podcast(topic, duration):
+    meta_prompt = create_podcast_prompt(topic, duration)
+    print(meta_prompt)
 
-topic = args.topic
-duration = args.duration
-# topic = "Finding a girlfriend in the bay area as an Indian Software Engineer"
-# duration = 10
+    prompt = call_openai_api(meta_prompt)
+    print(prompt)
 
-meta_prompt = create_podcast_prompt(topic, duration)
-print(meta_prompt)
-time.sleep(5)  # Sleep for 5 seconds
+    story = call_openai_api(prompt)
 
-prompt = call_openai_api(meta_prompt)
-print(prompt)
+    print("Here is the story:")
+    print(story)
 
-story = call_openai_api(prompt)
+    synthesize_speech(story)
 
-print("Here is the story:")
-print(story)
+    return story
 
-synthesize_speech(story)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Podcast Generator')
+    parser.add_argument('-t', '--topic', help='Topic of the podcast')
+    parser.add_argument('-d', '--duration', help='Duration of the podcast in minutes')
+    args = parser.parse_args()
+    topic = args.topic
+    duration = args.duration
+
+    # topic = "Finding a girlfriend in the bay area as an Indian Software Engineer"
+    # duration = 10
+    
+    create_podcast(topic, duration)
