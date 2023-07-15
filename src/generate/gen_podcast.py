@@ -59,24 +59,6 @@ def synthesize_speech(text):
     filename = 'output/speech.mp3'
     with open(filename, 'wb') as file:
         file.write(response['AudioStream'].read())
-    
-    print("Speech synthesis completed. The output is stored in output/speech.mp3")
-
-    # Play the audio file using pyaudio
-    p = pyaudio.PyAudio()
-    chunk = 1024
-    stream = p.open(format=p.get_format_from_width(2), channels=1, rate=22050, output=True)
-    audio_data = io.BytesIO(response['AudioStream'].read())
-    data = audio_data.read(chunk)
-
-    while data:
-        stream.write(data)
-        data = audio_data.read(chunk)
-
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-
 
 
 def create_podcast_prompt(topic, duration):
