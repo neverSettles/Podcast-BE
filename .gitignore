@@ -1,2 +1,4 @@
 .env
 copilotenv
+output/
+src/generate/__pycache__/

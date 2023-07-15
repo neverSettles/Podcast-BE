@@ -1,9 +1,10 @@
 import openai
 import os
 
-from flask import Flask, jsonify, request, send_file
+from generate import gen_podcast
+
+from flask import Flask, jsonify, request
 from dotenv import load_dotenv
-from gtts import gTTS
 
 
 # Set up OpenAI API credentials
@@ -18,30 +19,15 @@ def index():
 
 @app.route('/generate', methods=['POST'])
 def create_post():
-    # data = request.get_json()  # parse parameters from incoming request
+    data = request.get_json()  # parse parameters from incoming request
 
-    # topic = data.get('topic')  # get parameter called 'topic'
-    # duration = data.get('duration')  # get parameter called 'duration'
-    # tone = data.get('tone')  # get parameter called 'tone'
+    topic = data.get('topic')  # get parameter called 'topic'
+    duration = data.get('duration')  # get parameter called 'duration'
+    tone = data.get('tone')  # get parameter called 'tone'
+    
+    transcript = gen_podcast.create_podcast(topic, duration)
 
-    # # Call OpenAI API to generate podcast transcript
-    # prompt = f"Topic: {topic}\nDuration: {duration}\nTone: {tone}\n\nTranscript:\n"
-    # response = openai.Completion.create(
-    #     engine="davinci",
-    #     prompt=prompt,
-    #     temperature=0.7,
-    #     max_tokens=3000,
-    #     top_p=1,
-    #     frequency_penalty=0,
-    #     presence_penalty=0
-    # )
-
-    transcript = response.choices[0].text.strip()
-
-    # # return audio file here
-    tts = gTTS(transcript, lang='en')
-    tts.save('transcript.mp3')
-    return send_file('../transcript.mp3', mimetype="audio/mp3"), 200
+    return jsonify({'message': transcript}), 200
 
 
 if __name__ == '__main__':
