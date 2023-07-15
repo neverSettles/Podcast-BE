@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return jsonify({"Choo Choo": "Make a post request to /suggest to get output 🚅"})
+    return jsonify({"Choo Choo": "Isaac is awesome"})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.getenv("PORT", default=5001))
