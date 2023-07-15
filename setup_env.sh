@@ -9,7 +9,7 @@ source copilotenv/bin/activate
 # Check if requirements.txt file exists
 if [ -f "requirements.txt" ]; then
     echo "requirements.txt found. Installing requirements."
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
 else
     echo "No requirements.txt file found."
 fi
