@@ -27,6 +27,18 @@ def create_post():
     transcript = gen_podcast.create_podcast(topic, duration)
     return send_file('../output/speech.mp3', mimetype="audio/mp3"), 200
 
+@app.route('/generate/demo', methods=['POST'])
+def create_post():
+    data = request.get_json()  # parse parameters from incoming request
+
+    topic = data.get('topic')  # get parameter called 'topic'
+    duration = data.get('duration')  # get parameter called 'duration'
+    tone = data.get('tone')  # get parameter called 'tone'
+    
+    transcript = gen_podcast.create_podcast_expensive(topic, duration)
+    return send_file('../output/speech.mp3', mimetype="audio/mp3"), 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=os.getenv("PORT", default=5001))

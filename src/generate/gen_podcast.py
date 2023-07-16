@@ -48,11 +48,12 @@ def sythesize_speech_aws(text):
     with open(filename, 'wb') as file:
         file.write(response['AudioStream'].read())
 
-def synthesize_speech(text):
+    print('output saved in output/speech.mp3')
+
+def synthesize_speech_eleven(text):
     # Create a client using your AWS access keys stored as environment variables
 
-    # elevenlabs.convert_to_speech(text, 'output/speech')
-    sythesize_speech_aws(text)
+    elevenlabs.convert_to_speech(text, 'output/speech')
     print('output saved in output/speech.mp3')
 
 
@@ -87,7 +88,21 @@ def create_podcast(topic, duration):
     print("Here is the story:")
     print(story)
 
-    synthesize_speech(story)
+    sythesize_speech_aws(story)
+
+    return story
+
+def create_podcast_expensive(topic, duration):
+    prompt = create_podcast_prompt(topic, duration)
+
+    print(prompt)
+
+    story = call_openai_api(prompt)
+
+    print("Here is the story:")
+    print(story)
+
+    synthesize_speech_eleven(story)
 
     return story
 
