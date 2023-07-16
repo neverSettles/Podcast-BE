@@ -57,7 +57,7 @@ def synthesize_speech_eleven(text):
     print('output saved in output/speech.mp3')
 
 
-def create_podcast_prompt(topic, duration):
+def create_podcast_prompt(topic, duration, tone):
     # Create the podcast prompt
 #     meta_prompt = f"""
 # Please help me to make a prompt to GPT-3 to generate a podcast about {topic}.
@@ -72,14 +72,15 @@ def create_podcast_prompt(topic, duration):
     prompt = f"""
 Create the audio transcript of a podcast about {topic}.
 The podcast should be {duration} minutes long.
+The speaker of the podcast should talk in a {tone} tone.
 The podcast should be with 1 person only, and not try to switch between multiple people.
 The podcast should seem like a fluid conversation, without breaks in the conversation.
 The text of the response should be the transcript of the podcast.
 There should be no seperator between the segments, so that the podcast is one continuous audio file."""
     return prompt
 
-def create_podcast(topic, duration):
-    prompt = create_podcast_prompt(topic, duration)
+def create_podcast(topic, duration, tone):
+    prompt = create_podcast_prompt(topic, duration, tone)
 
     print(prompt)
 
@@ -110,11 +111,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Podcast Generator')
     parser.add_argument('-t', '--topic', required=True,  help='Topic of the podcast')
     parser.add_argument('-d', '--duration', required=True, help='Duration of the podcast in minutes')
+    parser.add_argument('-o', '--tone', required=True, help='Tone the speaker should speak in')
     args = parser.parse_args()
     topic = args.topic
     duration = args.duration
+    tone = args.tone
 
     # topic = "Finding a girlfriend in the bay area as an Indian Software Engineer"
     # duration = 10
     
-    create_podcast(topic, duration)
+    create_podcast(topic, duration, tone)
