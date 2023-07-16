@@ -28,14 +28,14 @@ def create_post():
     return send_file('../output/speech.mp3', mimetype="audio/mp3"), 200
 
 @app.route('/generate/demo', methods=['POST'])
-def create_post():
+def create_post_demo():
     data = request.get_json()  # parse parameters from incoming request
 
     topic = data.get('topic')  # get parameter called 'topic'
     duration = data.get('duration')  # get parameter called 'duration'
     tone = data.get('tone')  # get parameter called 'tone'
     
-    transcript = gen_podcast.create_podcast_expensive(topic, duration)
+    transcript = gen_podcast.create_podcast_expensive(topic, duration, tone)
     return send_file('../output/speech.mp3', mimetype="audio/mp3"), 200
 
 

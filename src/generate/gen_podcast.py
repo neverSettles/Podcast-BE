@@ -93,8 +93,8 @@ def create_podcast(topic, duration, tone):
 
     return story
 
-def create_podcast_expensive(topic, duration):
-    prompt = create_podcast_prompt(topic, duration)
+def create_podcast_expensive(topic, duration, tone):
+    prompt = create_podcast_prompt(topic, duration, tone)
 
     print(prompt)
 
