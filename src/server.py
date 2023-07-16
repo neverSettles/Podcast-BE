@@ -24,7 +24,7 @@ def create_post():
     duration = data.get('duration')  # get parameter called 'duration'
     tone = data.get('tone')  # get parameter called 'tone'
     
-    transcript = gen_podcast.create_podcast(topic, duration, tone)
+    transcript = gen_podcast.create_podcast(topic, duration)
     return send_file('../output/speech.mp3', mimetype="audio/mp3"), 200
 
 @app.route('/generate/demo', methods=['POST'])
