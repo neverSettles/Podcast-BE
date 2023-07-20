@@ -1,7 +1,5 @@
 .env
-copilotenv
-src/generate/__pycache__/
 output/*
-src/generate/eleven/__pycache__/
+**/__pycache__/
 podenv/
 demo/
