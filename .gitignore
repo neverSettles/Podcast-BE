@@ -4,3 +4,4 @@ src/generate/__pycache__/
 output/*
 src/generate/eleven/__pycache__/
 podenv/
+demo/
