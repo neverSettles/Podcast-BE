@@ -1,12 +1,13 @@
 import openai
 import boto3
 import os
+import uuid
 import io
 import time
 import argparse
 from dotenv import load_dotenv
 
-from eleven import elevenlabs
+# from eleven import elevenlabs
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -91,6 +92,31 @@ def create_podcast(topic, duration, tone):
 
     sythesize_speech_aws(story)
 
+    # Generate a UUID
+    folder_name = str(uuid.uuid4())
+
+    # Name of the parent folder
+    parent_folder = './outputs'
+
+    # Ensure the parent folder exists
+    os.makedirs(parent_folder, exist_ok=True)
+
+    # Create the full path for the new folder
+    full_path = os.path.join(parent_folder, folder_name)
+    full_path = './outputs/' + folder_name
+
+    # Create a new folder with the UUID as the name
+    os.makedirs(full_path, exist_ok=True)
+
+    # Your string to be saved
+    prompt_and_podcast = prompt + "\n\n" + story
+
+    # Write the string to a new file in the new folder
+    with open(full_path + '/prompt_and_podcast.txt', 'w') as f:
+        f.write(prompt_and_podcast)
+
+    print('wrote file')
+
     return story
 
 def create_podcast_expensive(topic, duration, tone):
@@ -104,6 +130,8 @@ def create_podcast_expensive(topic, duration, tone):
     print(story)
 
     synthesize_speech_eleven(story)
+
+
 
     return story
 
