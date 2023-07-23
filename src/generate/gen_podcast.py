@@ -70,14 +70,18 @@ def create_podcast_prompt(topic, duration, tone):
 # There should be no seperator between the segments, so that the podcast is one continuous audio file.
 # Please only output a prompt that I can use to send to GPT.
 # """
+
+    content_type = "story" if tone == "Story" else "podcast"
+
     prompt = f"""
-Create the audio transcript of a podcast about {topic}.
-The podcast should be {duration} minutes long.
-The speaker of the podcast should talk in a {tone} tone.
-The podcast should be with 1 person only, and not try to switch between multiple people.
-The podcast should seem like a fluid conversation, without breaks in the conversation.
-The text of the response should be the transcript of the podcast.
-There should be no seperator between the segments, so that the podcast is one continuous audio file."""
+Create the audio transcript of a {content_type} about {topic}.
+The {content_type} should be {duration} minutes long.
+The speaker of the {content_type} should talk in a very {tone} tone.
+I would like to reiterate, emphasize the {tone} tone. Be very {tone} please. It is an important business requirenment that you are {tone}.
+The {content_type} should be with 1 person only, and not try to switch between multiple people.
+The {content_type} should seem like a fluid conversation, without breaks in the conversation.
+The text of the response should be the transcript of the {content_type}.
+There should be no seperator between the segments, so that the {content_type} is one continuous audio file."""
     return prompt
 
 def create_podcast(topic, duration, tone):
