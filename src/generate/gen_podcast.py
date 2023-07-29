@@ -1,4 +1,5 @@
 import openai
+import requests
 import boto3
 import os
 import uuid
@@ -7,7 +8,6 @@ import time
 import argparse
 from dotenv import load_dotenv
 
-# from eleven import elevenlabs
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -51,10 +51,42 @@ def sythesize_speech_aws(text):
 
     print('output saved in output/speech.mp3')
 
+
+elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
+def convert_to_speech_eleven(text, filename):
+    print('synthesizing speech')
+    data = {
+      "text": text,
+      "model_id": "eleven_monolingual_v1",
+      "voice_settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.5
+      }
+    }
+
+    josh_voice_id = "TxGEqnHWrfWFTfGW9XjX"
+
+    CHUNK_SIZE = 1024
+    url = "https://api.elevenlabs.io/v1/text-to-speech/" + josh_voice_id
+
+
+    headers = {
+      "Accept": "audio/mpeg",
+      "Content-Type": "application/json",
+      "xi-api-key": elevenlabs_api_key
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+        
+    with open(filename + '.mp3', 'wb') as f:
+        for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+            if chunk:
+                f.write(chunk)
+
 def synthesize_speech_eleven(text):
     # Create a client using your AWS access keys stored as environment variables
 
-    elevenlabs.convert_to_speech(text, 'output/speech')
+    convert_to_speech_eleven(text, 'output/speech')
     print('output saved in output/speech.mp3')
 
 
@@ -152,4 +184,4 @@ if __name__ == '__main__':
     # topic = "Finding a girlfriend in the bay area as an Indian Software Engineer"
     # duration = 10
     
-    create_podcast(topic, duration, tone)
+    create_podcast_expensive(topic, duration, tone)

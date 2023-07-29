@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-from src.generate import gen_podcast
+from generate import gen_podcast
 
 # Set up OpenAI API credentials
 load_dotenv()
@@ -56,7 +56,7 @@ def create_post():
     tone = data.get('tone')  # get parameter called 'tone'
     
     transcript = gen_podcast.create_podcast(topic, duration, tone)
-
+    print('hi')
     # Upload to S3
     try:
         ensure_bucket_exists('podcast-generator')
